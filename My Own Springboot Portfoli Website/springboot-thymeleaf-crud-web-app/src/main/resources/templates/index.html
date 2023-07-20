@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Employee List</title>
+    <!-- Add the CSS styles here -->
+    <style>
+        /* Reset default margins and paddings */
+        body, h1, h2, table {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e0f2f1; /* Sky blue background color */
+            padding: 20px;
+        }
+
+        h1 {
+            color: #003366; /* Dark blue heading color */
+            margin-bottom: 20px;
+        }
+
+        /* Table styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        th {
+            background-color: #003366;
+            color: #fff;
+        }
+
+        /* Edit button style */
+        .edit-button {
+            padding: 8px 20px;
+            border: none;
+            background-color: #003366;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+
+        /* Delete button style */
+        form {
+            display: inline-block; /* To keep buttons on the same line */
+        }
+
+        form button {
+            padding: 8px 20px;
+            border: none;
+            background-color: #cc0000; /* Darker red button background color */
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Add form styles */
+        .add-form {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+
+        .add-form h2 {
+            color: #003366;
+            margin-bottom: 10px;
+        }
+
+        .add-form label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .add-form input {
+            padding: 8px 10px;
+            width: 100%;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        .add-form button[type="submit"] {
+            background-color: #003366;
+            color: #fff;
+            border: none;
+            padding: 8px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        /* Download link style */
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            background-color: #003366;
+            color: #fff;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        a:hover {
+            background-color: #002245; /* Slightly darker blue on hover */
+        }
+    </style>
+</head>
+<body>
+<h1>Corporate Employee List</h1>
+
+<table>
+    <thead>
+    <tr>
+        <th>Email</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Loop through the list of employees and generate table rows -->
+    <tr th:each="employee : ${listEmployees}">
+        <td th:text="${employee.email}"></td>
+        <td th:text="${employee.firstName}"></td>
+        <td th:text="${employee.lastName}"></td>
+        <td>
+            <!-- Add the "Edit" and "Delete" buttons for each employee record -->
+            <a th:href="@{/editEmployee/{id}(id=${employee.id})}">
+                <button class="edit-button">Edit</button>
+            </a>
+            <form th:action="@{/deleteEmployee/{id}(id=${employee.id})}" method="post">
+                <button type="submit">Delete</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<!-- Add a link to download the CSV file -->
+<a href="/downloadPDF">Download Employee List as PDF</a>
+
+<!-- Add form to add a new employee -->
+<div class="add-form">
+    <h2>Add Employee</h2>
+    <form action="/addEmployee" method="post">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+        <br>
+        <label for="firstName">First Name:</label>
+        <input type="text" id="firstName" name="firstName" required>
+        <br>
+        <label for="lastName">Last Name:</label>
+        <input type="text" id="lastName" name="lastName" required>
+        <br>
+        <button type="submit">Add Employee</button>
+    </form>
+</div>
+
+</body>
+</html>
